@@ -35,15 +35,4 @@ def berechne_zeit_bis_menge(N0, N, t_half):
     return t_half * math.log2(N0 / N)
 
 
-def berechne_halbwertszyklen(t, t_half):
-    """
-    Berechnet die Anzahl der Halbwertszyklen.
-    
-    Args:
-        t (float): Verstrichene Zeit
-        t_half (float): Halbwertszeit
-    
-    Returns:
-        float: Anzahl der Halbwertszyklen
-    """
-    return t / t_half
+ 

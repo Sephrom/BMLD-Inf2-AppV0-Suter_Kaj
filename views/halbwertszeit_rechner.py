@@ -1,12 +1,12 @@
 import streamlit as st
-from functions.halbwertszeit import halbwertszeit, berechne_zeit_bis_menge, berechne_halbwertszyklen
+from functions.halbwertszeit import halbwertszeit, berechne_zeit_bis_menge
 
 st.title("🧪 Halbwertszeit Rechner")
 
 st.write("Berechne die verbleibende Menge oder Zeit bei radioaktivem Zerfall")
 
 # Wähle den Rechner-Modus
-modus = st.radio("Wähle einen Modus:", ["Verbleibende Menge", "Zeit bis Menge", "Halbwertszyklen"])
+modus = st.radio("Wähle einen Modus:", ["Verbleibende Menge", "Zeit bis Menge", ])
 
 with st.form("halbwertszeit_form"):
     if modus == "Verbleibende Menge":
@@ -38,17 +38,3 @@ with st.form("halbwertszeit_form"):
             except ValueError as e:
                 st.error(str(e))
     
-    else:  # Halbwertszyklen
-        st.subheader("🔄 Halbwertszyklen berechnen")
-        st.latex(r"n = \frac{t}{t_{\frac{1}{2}}}")
-        
-        t = st.number_input("Verstrichene Zeit (t):", min_value=0.0, value=30.0)
-        t_half = st.number_input("Halbwertszeit (t_half):", min_value=0.1, value=10.0)
-        
-        submit_button = st.form_submit_button("Berechnen")
-        if submit_button:
-            result = berechne_halbwertszyklen(t, t_half)
-            st.success(f"Anzahl der Halbwertszyklen: **{result:.4f}**")
-
-
-
