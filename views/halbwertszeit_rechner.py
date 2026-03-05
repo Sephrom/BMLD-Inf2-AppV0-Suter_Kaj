@@ -11,7 +11,7 @@ modus = st.radio("Wähle einen Modus:", ["Verbleibende Menge", "Zeit bis Menge",
 with st.form("halbwertszeit_form"):
     if modus == "Verbleibende Menge":
         st.subheader("📊 Verbleibende Menge berechnen")
-        st.latex(r"N(t) = N_0 \cdot \left(\frac{1}{2}\right)^{\frac{t}{t_{half}}}")
+        st.latex(r"N(t) = N_0 \cdot \left(\frac{1}{2}\right)^{\frac{t}{t_{\frac{1}{2}}}}")
         
         N0 = st.number_input("Anfangsmenge (N₀):", min_value=0.1, value=100.0)
         t_half = st.number_input("Halbwertszeit (t_half):", min_value=0.1, value=10.0)
@@ -24,7 +24,7 @@ with st.form("halbwertszeit_form"):
     
     elif modus == "Zeit bis Menge":
         st.subheader("⏱️ Zeit bis Zielmenge berechnen")
-        st.latex(r"t = t_{half} \cdot \log_2\left(\frac{N_0}{N}\right)")
+        st.latex(r"t = t_{\frac{1}{2}} \cdot \log_2\left(\frac{N_0}{N}\right)")
         
         N0 = st.number_input("Anfangsmenge (N₀):", min_value=0.1, value=100.0)
         N = st.number_input("Zielmenge (N):", min_value=0.1, value=25.0)
@@ -40,7 +40,7 @@ with st.form("halbwertszeit_form"):
     
     else:  # Halbwertszyklen
         st.subheader("🔄 Halbwertszyklen berechnen")
-        st.latex(r"n = \frac{t}{t_{half}}")
+        st.latex(r"n = \frac{t}{t_{\frac{1}{2}}}")
         
         t = st.number_input("Verstrichene Zeit (t):", min_value=0.0, value=30.0)
         t_half = st.number_input("Halbwertszeit (t_half):", min_value=0.1, value=10.0)
