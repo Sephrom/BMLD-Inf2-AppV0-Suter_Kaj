@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd
 
 st.set_page_config(page_title="Meine App", page_icon=":material/home:")
 
@@ -7,3 +8,6 @@ pg_second = st.Page("views/halbwertszeit_rechner.py", title="Halbwertszeit Rechn
 
 pg = st.navigation([pg_home, pg_second])
 pg.run()
+
+if 'data_df' not in st.session_state:
+        st.session_state['data_df'] = pd.DataFrame()

@@ -1,12 +1,22 @@
+
 import streamlit as st
+import pandas as pd  # Neu hinzugefügt: Pandas importieren, um DataFrames zu verwenden
 from functions.halbwertszeit import halbwertszeit, berechne_zeit_bis_menge
+from datetime import datetime
+import pytz
+
+
 
 st.title("🧪 Halbwertszeit Rechner")
 
 st.write("Berechne die verbleibende Menge oder Zeit bei radioaktivem Zerfall")
 
+# Initialisiere st.session_state['data_df'], falls es noch nicht existiert
+if 'data_df' not in st.session_state:
+    st.session_state['data_df'] = pd.DataFrame(columns=['Modus', 'N0', 't_half', 't', 'N', 'Result'])
+
 # Wähle den Rechner-Modus
-modus = st.radio("Wähle einen Modus:", ["Verbleibende Menge", "Zeit bis Menge", ])
+modus = st.radio("Wähle einen Modus:", ["Verbleibende Menge", "Zeit bis Menge"])
 
 with st.form("halbwertszeit_form"):
     if modus == "Verbleibende Menge":
@@ -21,6 +31,18 @@ with st.form("halbwertszeit_form"):
         if submit_button:
             result = halbwertszeit(N0, t_half, t)
             st.success(f"Verbleibende Menge: **{result:.4f}**")
+            
+            # --- NEU: Historie aktualisieren ---
+            new_row = pd.DataFrame([{
+                "timestamp": datetime.now(pytz.timezone('Europe/Zurich')),  # Current swiss time
+                'Modus': modus,
+                'N0': N0,
+                't_half': t_half,
+                't': t,
+                'N': None,  # Nicht relevant für diesen Modus
+                'Result': result
+            }])
+            st.session_state['data_df'] = pd.concat([st.session_state['data_df'], new_row], ignore_index=True)
     
     elif modus == "Zeit bis Menge":
         st.subheader("⏱️ Zeit bis Zielmenge berechnen")
@@ -35,6 +57,26 @@ with st.form("halbwertszeit_form"):
             try:
                 result = berechne_zeit_bis_menge(N0, N, t_half)
                 st.success(f"Zeit bis Zielmenge: **{result:.4f}** Zeiteinheiten")
+                
+                # --- NEU: Historie aktualisieren ---
+                new_row = pd.DataFrame([{
+                    "timestamp": datetime.now(pytz.timezone('Europe/Zurich')),  # Current swiss time
+                    'Modus': modus,
+                    'N0': N0,
+                    't_half': t_half,
+                    't': None,  # Nicht relevant für diesen Modus
+                    'N': N,
+                    'Result': result
+                }])
+                st.session_state['data_df'] = pd.concat([st.session_state['data_df'], new_row], ignore_index=True)
             except ValueError as e:
                 st.error(str(e))
-    
+
+# --- NEU: Historie-Tabelle anzeigen (außerhalb der Form, um persistent zu sein) ---
+st.subheader("📋 Berechnungshistorie")
+st.dataframe(st.session_state['data_df'])
+
+
+
+
+        

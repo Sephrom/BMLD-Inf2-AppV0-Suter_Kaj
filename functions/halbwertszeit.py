@@ -1,3 +1,9 @@
+from datetime import datetime
+import pytz
+
+
+
+
 def halbwertszeit(N0, t_half, t):
     """
     Berechnet die verbleibende Menge nach Halbwertszeit.
@@ -33,6 +39,5 @@ def berechne_zeit_bis_menge(N0, N, t_half):
     if N <= 0 or N > N0:
         raise ValueError("N muss zwischen 0 und N0 liegen")
     return t_half * math.log2(N0 / N)
-
-
  
+
