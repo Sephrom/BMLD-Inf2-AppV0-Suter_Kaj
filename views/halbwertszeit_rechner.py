@@ -4,7 +4,7 @@ import pandas as pd  # Neu hinzugefügt: Pandas importieren, um DataFrames zu ve
 from functions.halbwertszeit import halbwertszeit, berechne_zeit_bis_menge
 from datetime import datetime
 import pytz
-
+from utils.data_manager import DataManager  # --- NEW CODE: import data manager ---
 
 
 st.title("🧪 Halbwertszeit Rechner")
@@ -43,6 +43,10 @@ with st.form("halbwertszeit_form"):
                 'Result': result
             }])
             st.session_state['data_df'] = pd.concat([st.session_state['data_df'], new_row], ignore_index=True)
+                        # --- CODE UPDATE: save data to data manager ---
+            data_manager = DataManager()
+            data_manager.save_user_data(st.session_state['data_df'], 'data.csv')
+            # --- END OF CODE UPDATE ---
     
     elif modus == "Zeit bis Menge":
         st.subheader("⏱️ Zeit bis Zielmenge berechnen")
@@ -69,8 +73,13 @@ with st.form("halbwertszeit_form"):
                     'Result': result
                 }])
                 st.session_state['data_df'] = pd.concat([st.session_state['data_df'], new_row], ignore_index=True)
+                                # --- CODE UPDATE: save data to data manager ---
+                data_manager = DataManager()
+                data_manager.save_user_data(st.session_state['data_df'], 'data.csv')
+                    # --- END OF CODE UPDATE ---
             except ValueError as e:
                 st.error(str(e))
+
 
 # --- NEU: Historie-Tabelle anzeigen (außerhalb der Form, um persistent zu sein) ---
 st.subheader("📋 Berechnungshistorie")
