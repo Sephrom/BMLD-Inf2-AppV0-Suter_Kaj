@@ -1,10 +1,10 @@
 
 import streamlit as st
-import pandas as pd  # Neu hinzugefügt: Pandas importieren, um DataFrames zu verwenden
+import pandas as pd  
 from functions.halbwertszeit import halbwertszeit, berechne_zeit_bis_menge
 from datetime import datetime
 import pytz
-from utils.data_manager import DataManager  # --- NEW CODE: import data manager ---
+from utils.data_manager import DataManager  
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 
@@ -80,11 +80,11 @@ with st.form("halbwertszeit_form"):
             except ValueError as e:
                 st.error(str(e))
 
-# --- NEU: Historie-Tabelle anzeigen (außerhalb der Form, um persistent zu sein) ---
+# ---: Historie-Tabelle anzeigen  ---
 st.subheader("📋 Berechnungshistorie")
 st.dataframe(st.session_state['data_df'])
 
-# --- NEU: Diagramm erstellen ---
+# ---: Diagramm erstellen ---
 st.subheader("📊 Balkendiagramm der Messungen")
 # Daten vorbereiten
 df = st.session_state['data_df'].copy()
@@ -105,14 +105,14 @@ if not df.empty:
     # Linke Y-Achse (rot) für "Verbleibende Menge"
     if not df_menge.empty:
         ax1.bar(df_menge['index'], df_menge['Result'], color='red', alpha=0.7, label='Verbleibende Menge')
-    ax1.set_ylabel('Verbleibende Menge', color='red')
+    ax1.set_ylabel('Verbleibende Menge (N(t))', color='red')
     ax1.tick_params(axis='y', labelcolor='red')
     
     # Rechte Y-Achse (blau) für "Zeit bis Menge"
     ax2 = ax1.twinx()
     if not df_zeit.empty:
         ax2.bar(df_zeit['index'], df_zeit['Result'], color='blue', alpha=0.7, label='Zeit bis Menge')
-    ax2.set_ylabel('Zeit bis Menge', color='blue')
+    ax2.set_ylabel('Zeit bis Menge (t)', color='blue')
     ax2.tick_params(axis='y', labelcolor='blue')
     
     # X-Achse anpassen 
@@ -127,8 +127,3 @@ if not df.empty:
     st.pyplot(fig)
 else:
     st.write("Keine Daten vorhanden, um ein Diagramm zu erstellen.")
-
-
-
-
-        
